@@ -1,0 +1,11 @@
+1.uixml的this对挂载到一个固定变量中，能够在这个uixml中的其他module里通过这个变量获取到uixml的this对象
+
+2.startAnimator等几个动画执行函数，需要在动画参数错误的时候也调用回调函数，并传参标识有错误（至少需要回调）
+
+3.支持服务端accessToken的加密算法API
+
+
+set npm_config_disturl=https://atom.io/download/atom-shell
+set npm_config_target=1.4.6
+set npm_config_runtime=electron
+set npm_config_arch=ia32
