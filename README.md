@@ -25,6 +25,8 @@ npm install
 
 进入server目录修改config.js的database信息为真实的数据库信息
 
+middleware如果不想配置可以去掉，但是建议准备一个mysql数据库，因为示例里登录后需要查询session信息，所以数据库查询的就是session存储的表，也就是middleware.sessionConfig.storeConfig配置的数据库信息
+
 ## 启动app
 
 进入server目录，执行

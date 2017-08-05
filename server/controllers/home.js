@@ -13,25 +13,18 @@ exports.index = async (ctx) => {
     //ctx.session.username = ctx.query.username || 'nandy007';
     /*console.log(ctx.session);
     console.log(ctx.session.sid);*/
-    /*const fetch = require('chestnut-utils').fetch;
-    const jqlite = require('chestnut-utils').jqlite;
+    const fetch = require('chestnut-utils').fetch;
     let rs = await fetch('https://auth.exmobi.cn/login?output=json', {
       ctx: ctx,
       requestId: 'exmobi',
       method: 'post',
-      body: 'username=nandy007&password=111111',
+      body: 'username=huangnan&password=111111',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     });
     console.log(rs.body);
-    let rs1 = await fetch('https://www.exmobi.cn/console/main.html', {
-      ctx: ctx,
-      requestId: 'exmobi',
-    });
     
-    const $ = jqlite(rs1.body);
-    console.log($('#consumer').html());*/
     
     console.log('router:'+ctx.session.sid);
     await ctx.render('index', {

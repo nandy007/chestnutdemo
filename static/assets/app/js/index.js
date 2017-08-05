@@ -2,8 +2,8 @@
 
     var obj = {
         form : {
-            username : '',
-            password : '',
+            username : 'huangnan',
+            password : '111111',
         },
         formValidate : {
             username : {

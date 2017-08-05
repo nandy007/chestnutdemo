@@ -7,5 +7,5 @@ const interface = require('../controllers/interface');
 
 module.exports = router
   .post('/login', interface.login)
-  .get('/logout', routerUtil.excuteFiters(['session']), interface.logout) //使用自定义过滤器session
+  .get('/logout', interface.logout)
   .get('/session-info', routerUtil.excuteFiters(['session']), interface.sessionInfo);//使用自定义过滤器session
