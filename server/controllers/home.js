@@ -13,13 +13,13 @@ exports.index = async (ctx) => {
     //ctx.session.username = ctx.query.username || 'nandy007';
     /*console.log(ctx.session);
     console.log(ctx.session.sid);*/
-    /*const fetch = require('../utils/fetch');
-    const jqlite = require('../utils/jqlite');
+    /*const fetch = require('chestnut-utils').fetch;
+    const jqlite = require('chestnut-utils').jqlite;
     let rs = await fetch('https://auth.exmobi.cn/login?output=json', {
       ctx: ctx,
       requestId: 'exmobi',
       method: 'post',
-      body: 'username=ddd&password=11111',
+      body: 'username=nandy007&password=111111',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
