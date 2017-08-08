@@ -52,7 +52,7 @@ node app.js
 
 访问过程为：routers -》 controllers+views -》 services -》 models
 
-当需要测试负载均衡的时候可以copy一份server在同级目录修改config.js的port为3002或者其他值即可
+当需要测试负载均衡的时候可以copy多份server在同级目录修改config.js的port为3002或者其他不同的值即可
 
 ## static目录
 
@@ -66,3 +66,11 @@ node app.js
 ## server_vhost
 
 为反向代理的示例
+
+## server_custom
+
+为自定义代理规则示例，功能是实现通过访问来源分配固定负载服务器
+
+示例用到rule已经添加到chestnut-app中，规则名为sourcebalancer
+
+本示例旨在提供一个自定义代理规则的写法
