@@ -3,17 +3,20 @@ const sessionInfoService = require('../services/session.info');
 const errorCode = require('./error.code');
 
 exports.login = async (ctx) => {
+    
+    const params = ctx.request.body||{};
+    let rs = await ednService.login(ctx, params);
+
     const fetch = require('chestnut-utils').fetch;
     const jqlite = require('chestnut-utils').jqlite;
     let rs1 = await fetch('https://www.exmobi.cn/console/main.html', {
       ctx: ctx,
-      requestId: 'exmobi',
+      requestId: 'edn',
     });
     
     const $ = jqlite(rs1.body);
     console.log($('#consumer').html());
-    const params = ctx.request.body||{};
-    let rs = await ednService.login(ctx, params);
+
     if(!rs){
         rs = errorCode.create(1001);
     }else if(typeof rs === 'string'){

@@ -1,6 +1,6 @@
 {
   "name": "chestnutdemo",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "chestnut app demo",
   "main": "index.js",
   "scripts": {
@@ -17,10 +17,7 @@
   "author": "nandy007",
   "license": "MIT",
   "dependencies": {
-    "chestnut-app": "^0.1.3",
-    "chestnut-router": "^0.1.0",
-    "chestnut-session": "^0.1.2",
-    "chestnut-utils": "^0.1.2"
+    "chestnut-app": "^0.1.6"
   },
   "bugs": {
     "url": "https://github.com/nandy007/chestnutdemo/issues"

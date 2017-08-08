@@ -27,7 +27,10 @@ module.exports = {
   middleware: {
     sessionConfig: {
       key: 'SESSIONID',
-      storeConfig: database.main // session存储配置;
+      storeConfig: database.main, // session存储配置;
+      cookie : {
+        maxAge : 30 * 60 * 1000 //24 * 60 * 60 * 1000
+      }
     }
   }
 

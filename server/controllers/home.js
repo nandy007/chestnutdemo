@@ -13,17 +13,17 @@ exports.index = async (ctx) => {
     //ctx.session.username = ctx.query.username || 'nandy007';
     /*console.log(ctx.session);
     console.log(ctx.session.sid);*/
-    const fetch = require('chestnut-utils').fetch;
+    /*const fetch = require('chestnut-utils').fetch;
     let rs = await fetch('https://auth.exmobi.cn/login?output=json', {
       ctx: ctx,
-      requestId: 'exmobi',
+      requestId: 'edn',
       method: 'post',
       body: 'username=huangnan&password=111111',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     });
-    console.log(rs.body);
+    console.log(rs.body);*/
     
     
     console.log('router:'+ctx.session.sid);
