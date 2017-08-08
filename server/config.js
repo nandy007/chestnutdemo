@@ -23,7 +23,7 @@ const database = {
 module.exports = {
   port: 3001,
   rootPath: path.join(__dirname),
-  database: database,
+  database: database/*,
   middleware: {
     sessionConfig: {
       key: 'SESSIONID',
@@ -32,6 +32,6 @@ module.exports = {
         maxAge : 30 * 60 * 1000 //24 * 60 * 60 * 1000
       }
     }
-  }
+  }*/
 
 };
