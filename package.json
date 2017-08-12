@@ -17,7 +17,7 @@
   "author": "nandy007",
   "license": "MIT",
   "dependencies": {
-    "chestnut-app": "^0.1.6"
+    "chestnut-app": "^0.2.0"
   },
   "bugs": {
     "url": "https://github.com/nandy007/chestnutdemo/issues"
