@@ -25,8 +25,20 @@
 
 
     // 封装网络请求
-    $.req = function (opts) {
+    $.req = function (opts, success, error) {
         var cacheCallback = {};
+
+        if(typeof opts==='string'){
+            opts = {
+                url : opts,
+                success : success,
+                error : error
+            };
+        }else{
+            if(typeof opts.type==='undefined'){
+                opts.type = 'post';
+            }
+        }
 
         if (!opts.url.match(/^http[s]?\:/)) {
             // opts.url = opts.url; // 必要的时候根据某种规律重新定义url地址

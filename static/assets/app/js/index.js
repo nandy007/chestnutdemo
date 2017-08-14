@@ -31,7 +31,6 @@
 
                 $.req({
                     url : 'interface/login',
-                    type : 'post',
                     data : obj.form,
                     success : function(rs){
                         location.href = 'main';
