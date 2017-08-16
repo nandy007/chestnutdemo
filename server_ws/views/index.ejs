@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link href="assets/frameworks/bootstrap3/css/bootstrap.css" rel="stylesheet" />
+    <link href="assets/app/css/index.css" rel="stylesheet" />
+    <script src="assets/frameworks/agilevm/agile.vm.browser.js"></script>
+    <script src="assets/frameworks/bootstrap3/js/bootstrap.js"></script>
+    <script src="assets/frameworks/socket/socket.io.js"></script>
+    <script>
+        $(function () {
+            var socket;
+            var obj = {
+                doConnect: function () {
+                    socket = io('http://localhost:3000');
+                    socket.on('connect', function () {
+                        console.log('已经连接');
+                    });
+                    socket.on('message', function (data) {
+                        obj.receive = data||'无';
+                    });
+                    socket.on('disconnect', function () {
+                        obj.doDisconnect();
+                        console.log('断开连接');
+                    });
+                    
+                },
+                doDisconnect : function(){
+                    socket&&socket.close();
+                    socket = null;
+                },
+                doLogin : function(){
+                    socket&&socket.emit('login', { u: 'nandy007' }, function (data) {
+                        if(data&&data.result==='success'){
+                            alert('登录成功');
+                        }else{
+                            alert('登录失败');
+                        }
+                    });
+                },
+                doSend : function(){
+                    socket&&socket.emit('message', obj.msg);
+                },
+                msg : '',
+                receive : '无'
+            }
+            $('#content').render(obj);
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container" id="content">
+        <button v-on:click="doConnect">连接</button>
+        <button v-on:click="doDisconnect">断开</button>
+        <button v-on:click="doLogin">登录</button>
+        <input type="text" v-model="msg"/>
+        <button v-on:click="doSend">发送</button>
+        <div><span>收到的消息：</span><span v-text="receive"></span></div>
+    </div>
+    <!-- /container -->
+</body>
+
+</html>

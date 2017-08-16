@@ -30,7 +30,7 @@ const cookies = function (req) {
 module.exports = {
 	"port": "3000",
 	//"rule": "sourcebalancer", // 此规则已经添加到chestnut-app的默认代理中
-	"rule": function (options) {
+	/*"rule": function (options) {
 		return function (req, res, proxy) {
 			// 获取特殊头信息，此头信息记录当前客户端首次请求分配的服务器
 			let target = cookies(req)['__ROUNDROBIN__'];
@@ -52,6 +52,15 @@ module.exports = {
 			// 通过代理指向分配的服务器
 			proxy.web(req, res, { target: target });
 		}
+	},*/
+	rule: function (options) {
+		// 代理websocket
+		return function (req, res, proxy) {
+			proxy.web(req, res, { target: 'http://127.0.0.1:3011' });
+			proxy.on('upgrade', function (req, socket, head) {
+				proxy.ws(req, socket, head);
+			});
+		};
 	},
 	servers: [
 		'http://127.0.0.1:3001',

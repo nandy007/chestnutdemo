@@ -17,7 +17,8 @@
   "author": "nandy007",
   "license": "MIT",
   "dependencies": {
-    "chestnut-app": "^0.2.0"
+    "chestnut-app": "^0.2.1",
+    "socket.io": "^2.0.3"
   },
   "bugs": {
     "url": "https://github.com/nandy007/chestnutdemo/issues"
