@@ -71,6 +71,11 @@ node app.js
 
 为自定义代理规则示例，功能是实现通过访问来源分配固定负载服务器
 
-示例用到rule已经添加到chestnut-app中，规则名为sourcebalancer
+示例中用到多个rule，但是同时只能用一个，有的rule已经注释，使用的时候自行配置
 
 本示例旨在提供一个自定义代理规则的写法
+
+
+## server_ws
+
+为websocket服务器示例，旨在提供一个使用chestnut-app手动启动的示例

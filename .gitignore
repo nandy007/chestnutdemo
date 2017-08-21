@@ -5,3 +5,4 @@ static/uploads/
 npm-debug.log
 npm-debug.log.*
 logs/
+server_im/

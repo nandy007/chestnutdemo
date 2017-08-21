@@ -1,6 +1,6 @@
 /*
  *	Agile VM 移动前端MVVM框架
- *	Version	:	1.0.1500949773051 beta
+ *	Version	:	1.0.1503281413197 beta
  *	Author	:	nandy007
  *	License MIT @ https://github.com/nandy007/agile-vm
  *//******/ (function(modules) { // webpackBootstrap
@@ -2459,7 +2459,7 @@ module.exports = __webpack_amd_options__;
 			var pos = start + rank;
 			gap = args.length - rank;
 
-			for(var i=len-1;i>pos-1;i--){
+			for(var i=pos;i<len;i++){
 				
 				var ni = i+gap;
 					oPath = $access+'.'+i,
