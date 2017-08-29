@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        test
+    </title>
+    
+    <script src="assets/frameworks/agilevm/agile.vm.browser.js"></script>
+
+    <script>
+        $(function(){
+            var list = [{title:1},{title:2},{title:3}];
+            var obj = {
+                list : list,
+                doFilter: function(index, item){
+                    console.log(item);
+                }
+            };
+
+            $('body').render(obj);
+
+            setTimeout(function(){
+                obj.list = [];
+                setTimeout(function(){
+                    obj.list = list;
+                }, 2000);
+            }, 2000);
+
+        });
+    </script>
+    
+</head>
+
+<body>
+    <div class="container">
+        <ul>
+            <li v-for="item in list" v-filter="doFilter"><span v-text="item.title"></span></li>
+        </ul>
+    </div><!-- /container -->
+</body>
+
+</html>

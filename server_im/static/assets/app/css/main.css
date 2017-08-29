@@ -1,0 +1,781 @@
+
+/*toolbar部分*/
+
+
+#container{
+    position: fixed;
+    width:100%;
+    height:100%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+#toolbar{
+    width: 62px;
+    height: 100%;
+    background: #27282C;
+    position: relative;
+}
+
+#toolbar > li{
+    width:100%;
+    text-align: center;
+    margin: 12px 0px;
+    cursor: pointer;
+}
+
+#toolbar .icon{
+    color: #8C8C8C;
+    font-size: 26px;
+}
+
+#toolbar > li.active .icon{
+    color: #09BB07 !important;
+}
+
+#toolbar > li:hover .icon{
+    color: #cccccc;
+}
+
+#toolbar > li:last-child{
+    position: absolute;
+    bottom:0px;
+}
+
+#userinfo{
+    width:296px;
+    height: 234px;
+    position: absolute;
+    background: #fff;
+    box-shadow: 0px 0px 10px #666;
+    padding: 30px;
+}
+
+#baseinfo{
+    display: flex;
+    flex-direction: row;
+}
+#baseinfo > li:first-child{
+    flex: 1;
+}
+
+#moreinfo > li{
+    display: flex;
+    flex-direction: row;
+}
+#moreinfo > li > span:first-child{
+    width:50px;
+}
+#moreinfo > li > span:last-child{
+    flex:1;
+    word-break:break-all;
+}
+
+#menulist{
+    width: 136px;
+    height: 138px;
+    background: #2A292A;
+    position: fixed;
+    left: 62px;
+    bottom: 0px;
+}
+
+#menulist > li{
+    line-height: 46px;
+    color: #8c8c8c;
+    padding:0px 14px;
+}
+
+#menulist > li:hover{
+    background: #313032;
+    cursor: pointer;
+}
+
+#groupInfo{
+    position: fixed;
+    top: 64px;
+    right: 0px;
+    bottom: 0px;
+    width: 200px;
+    background: #fff;
+    border-left: 1px solid #e7e7e7;
+}
+
+.groupInfo_title{
+    padding:10px 16px;
+    font-size: 14px;
+}
+
+.groupInfo_title > span{
+    color: #999;
+}
+
+.groupInfo_title > p{
+    color: #000;
+}
+
+#groupInfo > hr{
+    margin:0px 16px !important;
+}
+
+#groupInfo > ul{
+    padding:10px 0px;
+}
+
+#groupInfo > ul > li{
+    padding:6px 16px;
+}
+
+.groupinfo_btnarea{
+    padding:10px 16px;
+    display: flex;
+    flex-direction: row;
+}
+
+.groupinfo_btnarea > button{
+    flex: 1;
+    border: 1px solid #D9D8D8;
+    background: #e7e7e7;
+    padding:4px 6px;
+    margin:0px 4px;
+}
+
+.groupinfo_btnarea > button:hover, .del_btn.active{
+    border: 1px solid #09BB07;
+    background: #09BB07;
+    color: #fff;
+}
+
+#groupInfo ul.active .icon-im-guanbi{
+    display: inline-block !important;
+    color:#FF3B30;
+    cursor: pointer;
+}
+
+#groupInfo .member_name{
+    flex:1;
+}
+
+
+#groupuser{
+    position: fixed;
+    top: 50%;
+    right: 50%;
+    margin-top: -241px;
+    margin-right: -293px;
+    width: 586px;
+    height: 482px;
+    background: #fff;
+    border:1px solid #efefef;
+    box-shadow: 0px 0px 10px #666;
+}
+
+#groupuser.active{
+    display: flex !important;
+    flex-direction: row;
+}
+
+#groupuser.anim{
+    display: flex !important;
+}
+
+#groupuser > div{
+    flex:1;
+    padding: 16px 0px;
+    border-right:1px solid #efefef;
+}
+
+.groupuser_search{
+    position: relative;
+    background: #e4e4e5;
+    border: 1px solid #cfcfcf;
+    margin:0px 16px;
+}
+
+.groupuser_unselected{
+    display: flex;
+    flex-direction: column;
+}
+
+.groupuser_unselected > ul{
+    flex: 1;
+    overflow: auto;
+    overflow-x: hidden;
+    margin-top:10px;
+}
+
+.groupuser_unselected > ul > li{
+    padding:10px 16px;
+}
+
+.groupuser_unselected span{
+    flex:1;
+}
+
+.groupuser_unselected .status_btn{
+    display: inline-block;
+    font-size: 20px;
+}
+
+.groupuser_selected{
+    display: flex;
+    flex-direction: column;
+}
+
+.groupuser_selected > span{
+    padding: 0px 16px;
+    font-size: 20px;
+}
+
+.groupuser_selected > ul{
+    flex:1;
+    margin-top:9px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.groupuser_selected > ul > li{
+    padding:10px 16px;
+}
+
+.groupuser_selected .listitem span{
+    flex:1;
+}
+
+.groupuser_selected .listitem span:last-child{
+    flex:none;
+}
+
+#groupInfo .selected_btn{
+    text-align: right;
+}
+
+
+/*sidebar 部分*/
+
+#sidebar{
+    width: 252px;
+    background: #e4e4e5;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar > [data-role]{
+    flex: 1;
+}
+
+
+/*sidepanel部分-消息列表*/
+
+#msgpanel{
+    overflow-x: hidden;
+}
+
+#msgpanel > li:first-child{
+    display: none;
+}
+
+#msgpanel > li:last-child{
+    display: block;
+}
+
+#msgpanel > li{
+    padding: 10px;
+    border-bottom: 1px solid #cfcfcf;
+}
+
+.listitem{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    flex-wrap: nowrap;
+}
+
+.listitem:hover{
+    background: #D9D8D8;
+    cursor: pointer;
+}
+
+.listitem.active{
+    background: #C5C4C4 !important;
+}
+
+.listitem span{
+    overflow: hidden;
+}
+
+.listitem .listitem_tips font{
+    display: inline-block;
+    width:16px;
+    height: 16px;
+    line-height: 16px;
+    position: absolute;
+    left: 40px;
+    top: 6px;
+    background: #FF3B30;
+    color: #fff;
+    border-radius: 16px;
+    font-size: 8px;
+    text-align: center;
+}
+.listitem img{
+    margin-right: 20px;
+}
+
+/*sidebar searchbar部分*/
+
+#searchbar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding:0px 12px;
+    height: 52px;
+}
+
+#searchbar > li:first-child{
+    flex:1;
+    position: relative;
+    border: 1px solid #cfcfcf;
+    
+}
+
+#searchbar .search_key, .groupuser_search .search_key{
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    padding:0px 4px;
+}
+
+#searchbar .search_btn, .groupuser_search .search_btn{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    line-height: 24px;
+    padding:0px 4px;
+    background: #e4e4e5;
+}
+
+#searchbar .search_prompt, .groupuser_search .search_prompt{
+    display: inline-block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width:100%;
+    height: 100%;
+    line-height: 24px;
+    font-size: 12px;
+    padding:0px 4px;
+    pointer-events: none;
+    background: #e4e4e5;
+    overflow: hidden;
+}
+
+#searchbar .search_key:focus ~ .search_prompt, .groupuser_search .search_key:focus ~ .search_prompt{
+    display: none;
+}
+
+#searchbar > li:last-child{
+    width: 32px;
+    text-align: right;
+}
+
+.search_add{
+    text-align: center;
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    color: #8c8c8c;
+    border: 1px solid #cfcfcf;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
+.status_btn{
+    display: none;
+}
+
+.txl_selected .status_btn{
+    display: inline-block;
+    font-size: 20px;
+}
+
+.listitem .status_btn{
+    color: #1AAD19;
+}
+
+.listitem .status_btn:before{ 
+    content: "\e604"; 
+}
+
+.listitem.active .status_btn{
+    color:#FF3B30;
+}
+
+.listitem.active .status_btn:before { 
+    font-size: 22px;
+    content: "\e605"; 
+}
+
+#selectedarea.active{
+    width :100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.selected_title{
+    height: 64px;
+    line-height: 64px;
+    padding: 0px 20px;
+    border-bottom: 1px solid #E7E7E7;
+    font-size: 20px;
+}
+
+.selected_list{
+    flex:1;
+    overflow-x:hidden;
+}
+
+.selected_list .listitem{
+    padding: 10px 20px;
+    cursor: default;
+}
+
+.selected_text{
+    flex: 1;
+}
+
+.selected_remove{
+    display: inline-block;
+    line-height: 20px;
+    text-align: center;
+    color: #FF3B30;
+    cursor: pointer;
+}
+
+.selected_btn{
+    padding:14px;
+}
+
+.selected_form > div{
+    padding:20px 0px;
+}
+
+
+/*sidepanel部分-通讯录列表*/
+
+#txlpanel{
+    overflow-x: hidden;
+}
+.listpanel{
+    border-bottom: 1px solid #D9D8D8;
+}
+
+.listpanel > span{
+    font-size: 12px;
+    line-height: 50px;
+    color: #999;
+    margin:0px 10px;
+}
+
+.listpanel > ul > li{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+}
+
+.listpanel > ul > li.active{
+    display: flex !important;
+}
+
+.listpanel > ul > li > span{
+    margin-left: 20px;
+    flex:1;
+}
+
+/*workbench部分*/
+
+#workbench{
+    flex:1;
+    background: #f5f5f5;
+}
+
+
+#welcome > p:first-child{
+    text-align: center;
+    font-size: 40px;
+    line-height: 200px;
+    color: #666;
+}
+
+.welcome_menu{
+    text-align: center;
+}
+
+.welcome_menu a{
+    margin:20px;
+}
+
+
+.chatwin{
+    width:100%;
+    height: 100%;
+}
+
+.chatreceiver{
+    height: 64px;
+    padding:0px 20px;
+    border-bottom:1px solid #E7E7E7;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.chatreceiver_title{
+    flex:1;
+    text-align: left;
+}
+
+.chatreceiver span{
+    font-size: 20px;
+    color: #313032;
+}
+
+.chatreceiver .icon-im-more{
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.chatwin > div{
+    width:100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatinfo{
+    flex:1;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.chatinfo > li{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px 20px;
+}
+
+.chatinfo > li > img{
+    margin-top:1px;
+}
+
+.chatinfo > li > span{
+    max-width: 400px;
+    min-width: 40px;
+    min-height: 34px;
+    border: 1px solid #ededed;
+    border-radius: 4px;
+    background: #fff;
+    padding:10px;
+    margin: 0px 0px 0px 20px;
+    position: relative;
+}
+
+.chatinfo > li > span:before{
+    position: absolute;
+    left: -5px;
+    top: 8px;
+    width:8px;
+    height:8px;
+    border-bottom: 1px solid #ededed;
+    border-left: 1px solid #ededed;
+    transform:rotate(45deg);
+    content: ' ';
+    background: #fff;
+}
+
+.chatinfo > li > span:after{
+    display: none;
+    position: absolute;
+    right: -5px;
+    top: 8px;
+    width:8px;
+    height:8px;
+    border-top: 1px solid #ededed;
+    border-right: 1px solid #ededed;
+    transform:rotate(45deg);
+    content: ' ';
+    background: #fff;
+}
+
+.chatinfo > .me > span{
+    flex-direction: row-reverse;
+    margin: 0px 20px 0px 0px;
+}
+
+.chatinfo > .me > span:before{
+    display: none;
+}
+
+.chatinfo > .me > span:after{
+    display: block;
+}
+
+.chatinfo .me{
+    flex-direction: row-reverse;
+}
+
+.chatpanel{
+    height: 145px;
+    border-top: 1px solid #E7E7E7;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.chattool{
+    height:50px;
+}
+
+.chattool ul{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding:0px 10px;
+}
+.chattool ul li i{
+    font-size: 20px;
+}
+.chattool ul li{
+    margin:0px 10px;
+    color: #848484;
+    cursor: pointer;
+    position: relative;
+}
+.chattool ul li:hover{
+    color: #09BB07;
+}
+
+.chatmsg{
+    flex:1;
+    border: none;
+    background: transparent;
+    padding:0px 10px;
+}
+
+.chatbtn{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid #e1e1e1;
+    background: #f5f5f5;
+    padding:4px 10px;
+    border-radius: 2px;
+}
+
+.chatbtn:hover{
+    color: #fff;
+    border: 1px solid #129611;
+    background: #129611;
+}
+
+#biaoqing.active{
+    position: fixed;
+    bottom:145px;
+    left: 324px;
+    width: 400px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-end;
+    background: #f3f3f3;
+    box-shadow: 0px 0px 10px #666;
+    padding:8px;
+}
+
+.biaoqing_tab{
+    display: flex;
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+.biaoqing_tab li{
+    background: #fff;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    margin: 0px 20px;
+    padding:4px 16px;
+}
+
+.biaoqing_list{
+    flex: 1;
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: auto;
+    background: #fff;
+    margin-bottom: 0px;
+    padding:4px 0px;
+}
+.biaoqing_list li{
+    width: 14%;
+    text-align: center;
+}
+.biaoqing_list li img{
+    margin:4px;
+    cursor: pointer;
+}
+.biaoqing_list li img, .chat_biaoqing{
+    width: 30px;
+    height: 30px;
+}
+
+.chat_picture, .chat_file{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.chat_short{
+    width:100px;
+}
+
+.chatinfo a{
+    text-decoration: none;
+    border: none;
+}
+
+.chat_link_icon:before, .chat_attachment_icon:before{
+    font-family:"im" !important;
+    font-size:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-right: 4px;
+}
+
+.chat_link_icon:before{
+    content: "\e601";
+}
+
+ .chat_attachment_icon:before{
+    content: "\e640";
+ }

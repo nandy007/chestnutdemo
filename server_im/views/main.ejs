@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link href="assets/frameworks/bootstrap3/css/bootstrap.css" rel="stylesheet" />
+    <link href="assets/app/css/font_im/iconfont.css" rel="stylesheet" />
+    <link href="assets/app/css/comm.css" rel="stylesheet" />
+    <link href="assets/app/css/main.css" rel="stylesheet" />
+    <script src="https://app.cloopen.com/im50/ytx-web-im-min-new.js"></script>
+    <script src="assets/frameworks/agilevm/agile.vm.browser.js"></script>
+    <script src="assets/frameworks/bootstrap3/js/bootstrap.js"></script>
+    <script data-main="assets/app/js/entry" data-entry="main" src="assets/frameworks/amd/require.js"></script>
+    <script>
+    var userinfo = <%-JSON.stringify(userinfo) %>||{};
+    </script>
+</head>
+
+<body>
+    <div id="container" v-on:click="commFunc.doCheckPop">
+
+        <ul id="toolbar">
+            <li>
+                <img class="avata_s radius2" v-bind:src="userinfo.avata" v-on:click="toolFunc.showUserinfo($event, userinfo)" />
+            </li>
+
+            <li id="msgBtn" class="active" v-on:click="toolFunc.changeMenu('msgpanel')">
+                <i class="icon im icon-im-chat"></i>
+            </li>
+
+            <li id="txlBtn" v-on:click="toolFunc.changeMenu('txlpanel')">
+                <i class="icon im icon-im-txl"></i>
+            </li>
+
+            <li>
+                <i class="icon im icon-im-menu" v-on:click="toolFunc.showMenuList"></i>
+            </li>
+        </ul>
+
+        <div id="sidebar">
+            <ul id="searchbar">
+                <li>
+                    <input type="text" class="search_key" v-model="searchbar.searchValue" />
+                    <span class="search_prompt" v-text="searchbar.searchPrompt"></span>
+                    <i class="search_btn icon im icon-im-fangdajing"></i>
+                </li>
+                <li><span class="search_add" v-on:click="searchbar.doAdd">+</span></li>
+            </ul>
+            <ul id="msgpanel" data-role="view" class="active">
+                <li class="nodata">暂无数据</li>
+                <li class="listitem" data-role="view" v-bind:id="'msg-'+msgGroupItem.id" v-on:click="sidepanel.msgGroupClick(msgGroupItem)"
+                    v-for="msgGroupItem in sidepanel.msgGroup" v-filter="sidepanel.msgGroupFilter">
+                    <span><img class="avata_s radius2" v-bind:src="msgGroupItem.avata" /></span>
+                    <span v-text="msgGroupItem.showName"></span>
+                    <span class="listitem_tips" v-html="msgGroupItem.tipsHtml"></span>
+                </li>
+            </ul>
+            <div id="txlpanel" v-class="{txl_selected:searchbar.isSelected}" data-role="view">
+                <div class="listpanel">
+                    <span>企业同事</span>
+                    <ul>
+                        <li class="listitem" data-role="view" v-on:click="sidepanel.txlGroup.itemClick(enterpriseItem)" v-for="enterpriseItem in sidepanel.txlGroup.enterprise"
+                            v-show="enterpriseItem.isShow">
+                            <img class="avata_s radius2" v-bind:src="enterpriseItem.avata" />
+                            <span v-text="enterpriseItem.realname"></span>
+                            <i class="status_btn icon im"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="listpanel">
+                    <span>专家组</span>
+                    <ul>
+                        <li class="listitem" data-role="view" v-on:click="sidepanel.txlGroup.itemClick(expertItem)" v-for="expertItem in sidepanel.txlGroup.expert"
+                            v-show="expertItem.isShow">
+                            <img class="avata_s radius2" v-bind:src="expertItem.avata" />
+                            <span v-text="expertItem.realname"></span>
+                            <i class="status_btn icon im"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="listpanel">
+                    <span>好友</span>
+                    <ul>
+                        <li class="listitem" data-role="view" v-on:click="sidepanel.txlGroup.itemClick(friendItem)" v-for="friendItem in sidepanel.txlGroup.friend"
+                            v-show="friendItem.isShow">
+                            <img class="avata_s radius2" v-bind:src="friendItem.avata" />
+                            <span v-text="friendItem.realname"></span>
+                            <i class="status_btn icon im"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="workbench">
+            <div id="welcome" data-role="view" class="active">
+                <p>欢迎进入
+                    <%=title%>
+                </p>
+                <p class="welcome_menu">
+                    <a href="https://www.exmobi.cn" target="_blank">EDN首页</a>
+                    <a href="https://bbs.exmobi.cn" target="_blank">栗子社区</a>
+                    <a href="https://gitdocument.exmobi.cn" target="_blank">在线文档</a>
+                </p>
+            </div>
+
+            <div id="selectedarea" data-role="view" v-on:rolehide="searchbar.doHide">
+                <p class="selected_title">已选人员</p>
+                <ul class="selected_list">
+                    <li class="listitem" v-for="selectedItem in searchbar.selected">
+                        <img class="avata_s" v-bind:src="selectedItem.avata" />
+                        <span class="selected_text" v-text="selectedItem.realname"></span>
+                        <span class="selected_remove icon im icon-im-guanbi" v-on:click="selectedItem.doRemove($index)"></span>
+                    </li>
+                </ul>
+                <p class="selected_title">基本信息</p>
+                <div class="selected_form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">群组名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="searchbar.groupinfo.groupName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">群组公告</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" v-model="searchbar.groupinfo.declared"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="selected_btn">
+                    <button class="button_success margin6" v-on:click="searchbar.doSelected">确认</button>
+                    <button class="button_cancel margin6" v-on:click="searchbar.doCancel">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="poparea">
+        <div id="userinfo" data-role="view" class="radius2">
+            <ul id="baseinfo">
+                <li>
+                    <span class="bold font18" v-text="theuser.realname"></span>
+                    <p><span class="silver" v-text="theuser.username"></span></p>
+                </li>
+                <li>
+                    <img class="avata_m radius2" v-bind:src="theuser.avata" />
+                </li>
+            </ul>
+            <hr/>
+            <ul id="moreinfo">
+                <li><span class="silver">邮箱</span><span v-text="theuser.email"></span></li>
+                <li><span class="silver">手机</span><span v-text="theuser.mobile"></span></li>
+            </ul>
+        </div>
+
+        <ul id="menulist" data-role="view">
+            <li v-on:click="commFunc.showWelcome">欢迎页</li>
+            <li v-on:click="commFunc.showSetting">设置</li>
+            <li v-on:click="commFunc.doLogout">退出</li>
+        </ul>
+
+        <div id="biaoqing" data-role="view">
+            <ul class="biaoqing_tab">
+                <li>emoji</li>
+            </ul>
+            <ul class="biaoqing_list">
+                <li v-for="item in emoji.list">
+                    <img v-bind:src="emoji.getSrc(item.type)" v-bind:alt="emoji.name" v-on:click="emoji.doSelected(item.name)" />
+                </li>
+            </ul>
+        </div>
+
+        <div id="groupInfo" data-role="view" data-transition="slideLeftIn,slideRightOut">
+            <div class="groupInfo_title">
+                <span>群名</span>
+                <p v-text="groupinfo.groupName"></p>
+            </div>
+            <hr/>
+            <div class="groupinfo_btnarea">
+                <button v-on:click="groupinfo.doAdd">添加</button>
+                <button class="del_btn" v-class="{active:groupinfo.isActive}" v-on:click="groupinfo.doDel">删除</button>
+                <button v-on:click="groupinfo.doExit">退出</button>
+            </div>
+            <hr/>
+            <ul v-class="{active:groupinfo.isActive}">
+                <li class="listitem" v-for="memberInfo in groupinfo.members" v-filter="groupinfo.doFilter" v-if="memberInfo.member">
+                    <img class="avata_s" v-bind:src="memberInfo.avata" />
+                    <span class="member_name" v-text="memberInfo.nickName"></span>
+                    <span class="hide icon im icon-im-guanbi" v-on:click="groupinfo.delHandler(memberInfo)"></span>
+                </li>
+            </ul>
+        </div>
+        <div id="groupuser" data-role="view" data-transition="slideDownIn,slideUpOut">
+            <div class="groupuser_unselected">
+                <div class="groupuser_search">
+                    <input type="text" class="search_key" v-model="groupuser.searchValue" />
+                    <span class="search_prompt" v-text="groupuser.searchPrompt"></span>
+                    <i class="search_btn icon im icon-im-fangdajing"></i>
+                </div>
+                <ul>
+                    <li class="listitem" v-on:click="groupuser.itemClick(unselectedItem)" v-for="unselectedItem in groupuser.unselected">
+                        <img class="avata_s radius4" v-bind:src="unselectedItem.avata"/>
+                        <span v-text="unselectedItem.realname"></span>
+                        <i class="status_btn icon im"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="groupuser_selected">
+                <span>已选人员</span>
+                <ul>
+                    <li class="listitem" v-for="selectedItem in groupuser.selected">
+                        <img class="avata_s radius4" v-bind:src="selectedItem.avata"/>
+                        <span v-text="selectedItem.realname"></span>
+                        <span v-on:click="selectedItem.doRemove($index)" class="selected_remove icon im icon-im-guanbi"></span>
+                    </li>
+                </ul>
+                <div class="selected_btn">
+                    <button class="button_success margin6" v-on:click="groupuser.doSelected">确认</button>
+                    <button class="button_cancel margin6" v-on:click="groupuser.doCancel">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="templatearea">
+        <script type="text/html" id="chatwin_tmpl">
+            <div v-bind:id="id" class="chatwin" v-on:rolehide="doChatwinHide" data-role="view">
+                <div>
+                    <div class="chatreceiver">
+                        <span class="chatreceiver_title" v-text="receiver"></span>
+                        <span v-if="isGroup"><i class="icon im icon-im-more" v-on:click="showGroupinfo"></i></span>
+                    </div>
+                    <ul class="chatinfo" v-on:scroll="checkScroll">
+                        <li v-for="msgsItem in msgs" v-filter="msgsFilter" v-class="{me:msgsItem.isMe}">
+                            <img class="avata_s radius2" v-bind:src="msgsItem.avata" /><span v-html="msgsItem.msgHtml"></span>
+                        </li>
+                    </ul>
+                    <div class="chatpanel">
+                        <div class="chattool">
+                            <ul>
+                                <li v-on:click="showBiaoqing($event, id)"><i class="icon im icon-im-biaoqing"></i></li>
+                                <!--<li><i class="icon im icon-im-tupian"></i><input type="file" v-on:change="selectFile('picture')" class="chat_picture" accept="image/*"/></li>-->
+                                <li><i class="icon im icon-im-wenjian"></i><input type="file" v-on:change="selectFile('attachment')"
+                                        class="chat_file" /></li>
+                            </ul>
+                        </div>
+                        <textarea class="chatmsg" v-model="msg" v-on:paste="doPaste" prompt="请输入聊天内容"></textarea>
+                        <button class="chatbtn" v-on:click="doSend()">发送</button>
+                    </div>
+                </div>
+            </div>
+        </script>
+    </div>
+</body>
+
+</html>
