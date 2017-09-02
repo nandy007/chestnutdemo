@@ -1027,7 +1027,7 @@ var mainUtil = (function () {
                             emojiList[item.name] = item.type;
                         });
                     }
-                    return (contentObj.msgContent || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\[([^\]]+)\]/g, function (s, s1) {
+                    return (contentObj.msgContent || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\[([^\]\[]+)\]/g, function (s, s1) {
                         var type = emojiList[s1];
                         if (type) {
                             return '<img class="chat_biaoqing" alt="' + s1 + '" src="' + EMOJI_SRC + type + '.png' + '"/>';
