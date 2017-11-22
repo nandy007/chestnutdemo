@@ -1,0 +1,27 @@
+<ui>
+    <div>欢迎使用agile-cli搭建前端框架</div>
+    <aui-action page="{path:'/login'}">login</aui-action>
+</ui>
+
+<script>
+    require('@auicomponents/action')
+
+    function IndexPage() {
+
+    }
+
+    IndexPage.prototype = {
+        created: function () {
+            console.log('IndexPage组件已创建');
+        }
+    }
+
+    IndexPage.tag = 'indexpage';
+
+    module.exports = IndexPage;
+
+</script>
+
+<style>
+
+</style>

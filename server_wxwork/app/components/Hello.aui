@@ -1,0 +1,30 @@
+<ui>
+    <div>欢迎使用agile-cli搭建前端框架</div>
+</ui>
+
+<script>
+    function Hello() {
+
+    }
+
+    Hello.prototype = {
+        created: function () {
+            console.log('Hello组件已创建');
+        }
+    }
+
+    Hello.tag = 'hello';
+
+    module.exports = Hello;
+
+</script>
+
+<style>
+    aui-hello {
+        display: block;
+        background: #ff0000;
+        color: #fff;
+        text-align: center;
+        line-height: 40px;
+    }
+</style>

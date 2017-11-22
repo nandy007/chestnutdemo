@@ -1,0 +1,15 @@
+{
+    "fiberhome": {
+        "corpid": "ww802cf60a50fe73ed",
+        "token": "SRLByWZvLx0NTogLruNScva",
+        "encodingAESKey": "59BnhRHeGxX1JYl2YBzie9D5aksSAmQbgNZ7nxEXjP1",
+        "contact": {
+            "agentId": "",
+            "secret": "A-H709tqwZGW7Oj9OmWFe7yP185MawKj2J8vsFZ4aZE"
+        },
+        "oa": {
+            "agentId": "1000002",
+            "secret": "SuQOLEZCVbWt2-3_wyLN76Qn7lJbWxwDUqmW4OeByTg"
+        }
+    }
+}

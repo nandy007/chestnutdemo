@@ -1,9 +1,40 @@
 /*
- *	Agile VM 移动前端MVVM框架
- *	Version	:	1.0.1503975890836 beta
+ *	Agile CE 移动前端MVVM框架
+ *	Version	:	0.1.0.1511322159510 beta
  *	Author	:	nandy007
- *	License MIT @ https://github.com/nandy007/agile-vm
- *//******/ (function(modules) { // webpackBootstrap
+ *	License MIT @ https://github.com/nandy007/agile-ce
+ */var __ACE__ = {};
+var __EXPORTS_DEFINED_FACTORY__ = function() {
+
+    if ((typeof module === "object" || typeof module === "function") && typeof module.exports === "object") {
+        module.exports = __ACE__;
+    }
+
+    if (typeof window === 'undefined') return;
+
+    const modName = window.__AGILE_CE_ID__ || 'ace';
+
+    if (typeof window.define === "function" && window.define.amd) {
+        //window.define(modName, [], function () {
+        window.define([], function () {
+            return __ACE__;
+        });
+    }
+
+    if (!window[modName]) window[modName] = __ACE__;
+
+};
+var __EXPORTS_DEFINED__ = function (mod, modName) {
+    if(modName==='JQLite'){
+         for(var k in __ACE__){
+            mod[k] = __ACE__[k];
+         }
+         __ACE__ = mod;
+         __EXPORTS_DEFINED_FACTORY__();
+    }else{
+        __ACE__[modName] = mod;
+    }
+};/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -155,6 +186,25 @@
 				});
 			}
 			return this;
+		},
+		__on__: function (evt, selector, callback) {
+			this.each(function () {
+				var $node = $(this), aceEvents = this['__ace-events__'] || [];
+				if (aceEvents.indexOf(evt) > -1) return;
+				aceEvents.push(evt);
+				$node.attr('acee', '1');
+				jqlite.util.defRec(this, '__ace-events__', aceEvents);
+			});
+			this.on.apply(this, arguments);
+		},
+		__remove_on__: function(){
+			$(this).find('[acee="1"]').each(function(){
+				var $node = $(this), aceEvents = this['__ace-events__'] || [];
+				jqlite.util.defRec(this, '__ace-events__', null);
+				jqlite.util.each(aceEvents, function(i, evt){
+					$node.off(evt);
+				});
+			});
 		}
 	});
 
@@ -306,8 +356,21 @@
 					});
 				})(i, func);
 			});
+		},
+		sequence: function(){
+			var args = jqlite.util.copyArray(arguments), _this = [];
+			var func = args.shift();
+			if(!func) return;
+			if(this instanceof Array){
+				_this = this;
+			}
+			_this.unshift(function(){
+				jqlite.util.sequence.apply(jqlite.util.copyArray(arguments), args);
+			});
+			func.apply(null, _this);
 		}
 	};
+
 	
 	//继承JQLite的特殊类，用于文档碎片的存储
 	var JQFragment = function(){
@@ -324,6 +387,11 @@
 		},
 		isJQAdapter : function(){
 			return false;
+		},
+		createJQPlaceholder: function(){
+			var dom = document.createComment(' ');
+			dom.isPlaceholder = true;
+			return jqlite(dom);
 		},
 		createJQFragment : function(){
 			return new JQFragment();
@@ -386,6 +454,8 @@
 	if(!window.jQuery){
 		window.jQuery = jqlite;
 	}
+
+	if (typeof __EXPORTS_DEFINED__ === 'function') __EXPORTS_DEFINED__(jqlite, 'JQLite');
 
 	var _template = __webpack_require__(10);
 	jqlite.template = _template;
@@ -467,8 +537,19 @@
 
 			if (isAdapter) {
 				return;
-			} else {
+			}else if($node.attr('mode')==='single'){
 				$listFragment.replaceTo($node);
+			}else{
+				var before$placeholder = $.ui.createJQPlaceholder(),
+					after$placeholder = $.ui.createJQPlaceholder();
+				before$placeholder.insertBefore($node);
+				after$placeholder.insertAfter($node);
+				$listFragment.replaceTo($node);
+				
+				$node.def('$placeholder', {
+					before: before$placeholder,
+					after: after$placeholder
+				});
 			}
 
 			var deps = [$access], updater = this.updater;
@@ -489,11 +570,12 @@
 				var handlerFlag = (i === 0);
 				parser.watcher.updateIndex($access, options, function (opts) {
 					var cFor = forsCache[opts.newVal] = forsCache[opts.oldVal];
+					if(__filter) cFor.filter = __filter;
 					cFor['$index'] = opts.newVal;
 					parser.watcher.change(opts);
 				}, handlerFlag);
 
-				updater.updateList($parent, options, function (arr) {
+				updater.updateList($parent, $node, options, function (arr) {
 					if (__filter) $node.data('__filter', __filter);
 					var baseIndex = Parser.getBaseIndex(options);
 					var $listFragment = parser.preCompileVFor($node, function () {
@@ -542,7 +624,7 @@
 
 				if (isOnce) $node.off(evt, Parser._proxy);
 
-				$node.on(evt, Parser._proxy);
+				$node.__on__(evt, Parser._proxy);
 			});
 		},
 		'vone': function ($node, fors, expression, dir) {
@@ -772,9 +854,7 @@
 			}, fors);
 
 			Parser.bindChangeEvent($node, function () {
-				if (isChecked === $node.is(':checked')) return;
-				isChecked = $node.is(':checked');
-				duplex[field] = $node.val();
+				if($node.is(':checked')) duplex[field] = $node.val();
 			});
 		},
 		'vmcheckbox': function ($node, fors, expression, dir) {
@@ -1165,6 +1245,15 @@
 	};
 
 	/**
+	 * 销毁
+	 */
+	pp.destroy = function($element){
+		$element.__remove_on__();
+		this.watcher.destroy();
+		this.$scope = this.watcher = this.updater = null;
+	}
+
+	/**
 	 * 添加指令规则
 	 * @param   {Object|String}     directive       [当只有一个参数是代表是指令规则键值对，两个参数的时候代表指令名]
 	 * @param   {Function}          func            [指令解析函数]
@@ -1459,27 +1548,27 @@
 
 		// 解决中文输入时 input 事件在未选择词组时的触发问题
 		// https://developer.mozilla.org/zh-CN/docs/Web/Events/compositionstart
-		$node.on('compositionstart', function () {
+		$node.__on__('compositionstart', function () {
 			composeLock = true;
 		});
-		$node.on('compositionend', function () {
+		$node.__on__('compositionend', function () {
 			composeLock = false;
 		});
 
 		// input 事件(实时触发)
-		$node.on('input', function () {
+		$node.__on__('input', function () {
 			callbacl.apply(this, arguments);
 		});
 
 		// change 事件(失去焦点触发)
-		$node.on('blur', function () {
+		$node.__on__('blur', function () {
 			callbacl.apply(this, arguments);
 		});
 	};
 
 	//通用change事件监听处理。比如：radio、checkbox、select等
 	Parser.bindChangeEvent = function ($node, callback) {
-		$node.on('change', function () {
+		$node.__on__('change', function () {
 			callback.apply(this, arguments);
 		});
 	};
@@ -1554,13 +1643,16 @@
 
 
 	module.exports = Parser;
+
+	if (typeof __EXPORTS_DEFINED__ === 'function') __EXPORTS_DEFINED__(Parser, 'Parser');
+
 })();
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(0);
+__webpack_require__(0);
 
 /***/ }),
 /* 3 */
@@ -1610,6 +1702,15 @@ module.exports = __webpack_amd_options__;
 	}
 
 	var mp = MVVM.prototype;
+
+
+	/**
+	 * 销毁mvvm对象
+	 */
+	mp.destroy = function(){
+		this.vm.destroy();
+		this.backup = this.vm = this.$data = null;
+	}
 
 
 	/**
@@ -1884,6 +1985,14 @@ module.exports = __webpack_amd_options__;
 		vtext.call(vtext, $node, fors, text, 'v-text');
 	};
 
+	/**
+	 * 销毁
+	 */
+	cp.destroy = function(){
+		this.parser.destroy(this.$element);
+		this.parser = this.$data = null;
+	}
+
 	module.exports = Compiler;
 })();
 
@@ -1920,7 +2029,7 @@ module.exports = __webpack_amd_options__;
 				this.listeners[index] = function () {
 					callback.apply(context || this, arguments);
 				};
-				$node.on(evt, this.listeners[index]);
+				$node.__on__(evt, this.listeners[index]);
 			},
 			remove : function ($node, evt, callback) {
 				var _this = this;
@@ -1958,10 +2067,11 @@ module.exports = __webpack_amd_options__;
 	/**
 	 * 更新节点vfor数据 realize v-for
 	 * @param   {JQLite}      $parent    [父节点对象]
+	 * @param   {Object}      $node      [vfor指令节点对象]
 	 * @param   {Object}      options    [操作选项]
 	 * @param   {Function}    cb         [回调函数]
 	 */
-	up.updateList = function($parent, options, cb){
+	up.updateList = function($parent, $node, options, cb){
 		var method = options.method;
 		switch(method){
 			case 'xReset' : 
@@ -2034,53 +2144,94 @@ module.exports = __webpack_amd_options__;
 		return arr;
 	};
 
-	up.updateListXReset = function($parent, options, cb){
+	up.updateListXReset = function($parent, $node, options, cb){
 		var $fragment = cb(options.args);
-		var children = getVforChildren($parent, options['vforIndex']);
-		if(children.length===0){
-			$fragment.appendTo($parent);
+		var	$placeholder = $node.def('$placeholder');
+		if($placeholder){
+			var	before$placeholder = $placeholder.before;
+				$next = before$placeholder.next();
+			//var children = getVforChildren($parent, options['vforIndex']);
+			while($next && ($next.length===1) && !$next.def('isPlaceholder')){
+				$next.remove();
+				$next = before$placeholder.next();
+			}
+			$fragment.insertAfter(before$placeholder);
 		}else{
-			$fragment.replaceTo(children[0]);
-			$.util.each(children, function(i, $child){
-				//$parent.remove($child);
-				$child.remove();
-			});
+			var children = getVforChildren($parent, options['vforIndex']);
+			if(children.length===0){
+				$fragment.appendTo($parent);
+			}else{
+				$fragment.replaceTo(children[0]);
+				$.util.each(children, function(i, $child){
+					//$parent.remove($child);
+					$child.remove();
+				});
+			}
 		}
 	};
 
-	up.updateListPop = function($parent, options, cb){
-		var $node = getVforLastChild($parent, options['vforIndex']);
-		$node&&$node.remove();
-	};
-
-	up.updateListPush = function($parent, options, cb){
-		var $fragment = cb(options.args);
-		var $node = getVforLastChild($parent, options['vforIndex']);
-		if($node&&$node.length>0){
-			$fragment.insertAfter($node);
+	up.updateListPop = function($parent, $node, options, cb){
+		var $placeholder = $node.def('$placeholder');
+		if($placeholder){
+			var	after$placeholder = $placeholder.after;
+			var $last = after$placeholder.prev();
+			$last&&($last.length===1)&&(!$last.def('isPlaceholder'))&&$last.remove();
 		}else{
-			$fragment.appendTo($parent);
+			var $children = getVforLastChild($parent, options['vforIndex']);
+			$children&&$children.remove();
 		}
 	};
 
-	up.updateListShift = function($parent, options, cb){
-		var $node = getVforFirstChild($parent, options['vforIndex']);
-		$node&&$node.remove();
-	};
-
-	up.updateListUnshift = function($parent, options, cb){
+	up.updateListPush = function($parent, $node, options, cb){
 		var $fragment = cb(options.args);
-		var $node = getVforFirstChild($parent, options['vforIndex']);
-		if($node&&$node.length>0){
-			$fragment.insertBefore($node);
+		var $placeholder = $node.def('$placeholder');
+		if($placeholder){
+			var	after$placeholder = $placeholder.after;
+			$fragment.insertBefore(after$placeholder);
 		}else{
-			$fragment.appendTo($parent);
-		}	
+			var $children = getVforLastChild($parent, options['vforIndex']);
+			if($children&&$children.length>0){
+				$fragment.insertAfter($children);
+			}else{
+				$fragment.appendTo($parent);
+			}
+		}
 	};
 
-	up.updateListSplice = function($parent, options, cb){
+	up.updateListShift = function($parent, $node, options, cb){
+		var $placeholder = $node.def('$placeholder');
+		if($placeholder){
+			var	before$placeholder = $placeholder.before;
+			var $first = before$placeholder.next();
+			$first&&($first.length===1)&&(!$first.def('isPlaceholder'))&&$first.remove();
+		}else{
+			var $children = getVforFirstChild($parent, options['vforIndex']);
+			$children&&$children.remove();
+		}
+		
+	};
+
+	up.updateListUnshift = function($parent, $node, options, cb){
+		var $fragment = cb(options.args);
+		var $placeholder = $node.def('$placeholder');
+		if($placeholder){
+			var	before$placeholder = $placeholder.before;
+			$fragment.insertAfter(before$placeholder);
+		}else{
+			var $children = getVforFirstChild($parent, options['vforIndex']);
+			if($children&&$children.length>0){
+				$fragment.insertBefore($children);
+			}else{
+				$fragment.appendTo($parent);
+			}	
+		}
+	};
+
+	up.updateListSplice = function($parent, $node, options, cb){
 
 		var children = getVforChildren($parent, options.vforIndex);
+
+		var $placeholder = $node.def('$placeholder');
 
 		var args = $.util.copyArray(options.args);
 		var startP = args.shift();
@@ -2093,7 +2244,12 @@ module.exports = __webpack_amd_options__;
 				if($child){
 					$fragment.insertBefore($child);
 				}else{
-					$fragment.appendTo($parent);
+					if($placeholder){
+						var	after$placeholder = $placeholder.after;
+						$fragment.insertBefore(after$placeholder);
+					}else{
+						$fragment.appendTo($parent);
+					}
 				}
 				args = [];
 			};
@@ -2102,8 +2258,9 @@ module.exports = __webpack_amd_options__;
 
 	};
 
-	up.updateListCommon = function($parent, options, cb){
+	up.updateListCommon = function($parent, $node, options, cb){
 		var children = getVforChildren($parent, options.vforIndex);
+		var $placeholder = $node.def('$placeholder');
 		var args = options.newArray;
 		for(var i=0, len=children.length;i<len;i++){
 			var $child = children[i];
@@ -2112,7 +2269,12 @@ module.exports = __webpack_amd_options__;
 				if($child){
 					$fragment.insertBefore($child);
 				}else{
-					$fragment.appendTo($parent);
+					if($placeholder){
+						var	after$placeholder = $placeholder.after;
+						$fragment.insertBefore(after$placeholder);
+					}else{
+						$fragment.appendTo($parent);
+					}
 				}
 				args = [];
 			};
@@ -2494,6 +2656,15 @@ module.exports = __webpack_amd_options__;
 
 	};
 
+	/**
+	 * 销毁
+	 */
+	wp.destroy = function(){
+		this.observer.destroy();
+		this.$depSub = {};
+		this.parser = this.observer = null;
+	}
+
 	
 	module.exports = Watcher;
 })();
@@ -2528,6 +2699,11 @@ module.exports = __webpack_amd_options__;
 			this[l + i] = arguments[i];
 		}
 		return this;
+	};
+
+	// 增加$set方法修改元素值
+	Array.prototype.$set = function (pos, item) {
+		return this.splice(pos, 1, item);
 	};
 
 	// 重写的数组操作方法
@@ -2726,6 +2902,11 @@ module.exports = __webpack_amd_options__;
 			});
 	};
 
+	// 销毁
+	op.destroy = function(){
+		this.$subs = {};
+	};
+
 	module.exports = Observer;
 })();
 
@@ -2735,7 +2916,7 @@ module.exports = __webpack_amd_options__;
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*
 *	Template JS模板引擎
-*	Version	:	1.0.0 beta
+*	Version	:	1.0.1 beta
 *	Author	:	nandy007
 *   License MIT @ https://github.com/nandy007/agile-template
 */
@@ -2754,11 +2935,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*
 	//工具类
 	var _helper = {
 		getDom : function(id){
-			if(typeof document!='undefined'&&document.getElementById){
-				return document.getElementById(id);
-			}else{
-				return __webpack_require__(11).getElement(id);
-			}
+			return document.getElementById(id);
 		},
 		cache : {//内置函数和自定义函数调用全部存放于_helper.cache里
 			include : function(str, _data){
@@ -2916,6 +3093,9 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*
 		helper : function(funcName, func){
 			_helper.setCache(funcName, func);
 		},
+		hookHelper: function(funcName, func){
+			_helper[funcName] = func;
+		},
 		/**
 		 * 对template类进行配置设置，可进行设置的配置请参考_config内部对象
 		 * @method config
@@ -2971,12 +3151,6 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*
 	}
 
 })();
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = require("Document");
 
 /***/ })
 /******/ ]);

@@ -1,0 +1,50 @@
+<ui>
+    <aui-titlebar>
+        <span class="title">Login</span>
+    </aui-titlebar>
+    <div id="login" style="display:none" mbsc-form>
+        <div class="mbsc-form-group-inset">
+            <label>
+            <input id="email" type="email" name="Email" placeholder="Email" />
+        </label>
+            <label>
+            <input name="password" type="text" placeholder="Password" data-password-toggle="true" data-icon="none" data-icon-align="right" />
+        </label>
+        </div>
+
+        <div class="mbsc-form-group-inset">
+            <button class="mbsc-btn-block md-sg-btn">Sign in</button>
+        </div>
+
+
+    </div>
+</ui>
+
+<script>
+    require('@auicomponents/utils/mobiscroll3/css/mobiscroll.javascript.min.css');
+
+    require('@auicomponents/titlebar');
+
+    var mobiscroll = require('@auicomponents/utils/mobiscroll3/js/mobiscroll.javascript.min');
+
+    function LoginPage() {
+
+    }
+
+    LoginPage.prototype = {
+        created: function () {
+            mobiscroll.form('#login');
+        }
+    }
+
+    LoginPage.tag = 'loginpage';
+
+    module.exports = LoginPage;
+
+</script>
+
+<style>
+    aui-loginpage{
+        background: #efeff4 !important;
+    }
+</style>
